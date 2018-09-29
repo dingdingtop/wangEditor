@@ -3069,13 +3069,13 @@
       pasteHtml = pasteHtml.replace(/<img.+?>/igm, '');
     }
 
-    if (filterStyle) {
+    // if (filterStyle) {
       // 过滤样式
-      pasteHtml = pasteHtml.replace(/\s?(class|style)=('|").*?('|")/igm, '');
-    } else {
+      // pasteHtml = pasteHtml.replace(/\s?(class|style)=('|").*?('|")/igm, '');
+    // } else {
       // 保留样式
       pasteHtml = pasteHtml.replace(/\s?class=('|").*?('|")/igm, '');
-    }
+    // }
 
     return pasteHtml;
   }

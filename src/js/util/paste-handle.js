@@ -59,9 +59,12 @@ export function getPasteHtml(e, filterStyle, ignoreImg) {
        // pasteHtml = pasteHtml.replace(/\s?(class|style)=('|").*?('|")/igm, '')
     // } else {
         // 保留样式
-        pasteHtml = pasteHtml.replace(/\s?class=('|").*?('|")/igm, '')
+        // pasteHtml = pasteHtml.replace(/\s?class=('|").*?('|")/igm, '')
     // }
-
+	
+	// 保留class
+    pasteHtml = pasteHtml.replace(/\s?style=('|").*?('|")/igm, '')
+	
     return pasteHtml
 }
 

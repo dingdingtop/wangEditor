@@ -3029,7 +3029,6 @@
     } else {
       pasteText = clipboardData.getData('text/plain');
     }
-
     return replaceHtmlSymbol(pasteText);
   }
 
@@ -3063,7 +3062,6 @@
     pasteHtml = pasteHtml.replace(/<!--.*?-->/mg, '');
     // 过滤 data-xxx 属性
     pasteHtml = pasteHtml.replace(/\s?data-.+?=('|").+?('|")/igm, '');
-
     if (ignoreImg) {
       // 忽略图片
       pasteHtml = pasteHtml.replace(/<img.+?>/igm, '');
@@ -3074,9 +3072,24 @@
       // pasteHtml = pasteHtml.replace(/\s?(class|style)=('|").*?('|")/igm, '');
     // } else {
       // 保留样式
-      pasteHtml = pasteHtml.replace(/\s?class=('|").*?('|")/igm, '');
+      // pasteHtml = pasteHtml.replace(/\s?class=('|").*?('|")/igm, '');
     // }
+    //整段复制，保留class 过滤style
+    pasteHtml = pasteHtml.replace(/\s?style=('|").*?('|")/igm, '');
+    // 去掉 无用标签
+    pasteHtml = pasteHtml.replace('<html>', '')
+    pasteHtml = pasteHtml.replace('<body>', '')
+    pasteHtml = pasteHtml.replace('</body>', '')
+    pasteHtml = pasteHtml.replace('<span>', '')
+    pasteHtml = pasteHtml.replace('</span>', '')
+    pasteHtml = pasteHtml.replace('<b>', '')
+    pasteHtml = pasteHtml.replace('</b>', '')
+    pasteHtml = pasteHtml.replace('<font>', '')
+    pasteHtml = pasteHtml.replace('</font>', '')
+    pasteHtml = pasteHtml.replace('<i>', '')
+    pasteHtml = pasteHtml.replace('</i>', '')
 
+    pasteHtml = pasteHtml.trim() // 去掉空白
     return pasteHtml;
   }
 
@@ -3485,13 +3498,12 @@
         var pasteHtml = getPasteHtml(e, pasteFilterStyle, ignoreImg);
         var pasteText = getPasteText(e);
         pasteText = pasteText.replace(/\n/gm, '<br>');
-
         var $selectionElem = editor.selection.getSelectionContainerElem();
+
         if (!$selectionElem) {
           return;
         }
         var nodeName = $selectionElem.getNodeName();
-
         // code 中只能粘贴纯文本
         if (nodeName === 'CODE' || nodeName === 'PRE') {
           if (pasteTextHandle && isFunction(pasteTextHandle)) {
@@ -3501,7 +3513,6 @@
           editor.cmd.do('insertHTML', '<p>' + pasteText + '</p>');
           return;
         }
-
         // 先放开注释，有问题再追查 ————
         // // 表格中忽略，可能会出现异常问题
         // if (nodeName === 'TD' || nodeName === 'TH') {
@@ -3720,7 +3731,7 @@
 
       if (this.queryCommandSupported('insertHTML')) {
         // W3C
-        this._execCommand('insertHTML', html);
+        this._execCommand('insertHTML',html);
       } else if (range.insertNode) {
         // IE
         range.deleteContents();

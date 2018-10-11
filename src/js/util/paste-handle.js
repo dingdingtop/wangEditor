@@ -48,6 +48,7 @@ export function getPasteHtml(e, filterStyle, ignoreImg) {
     pasteHtml = pasteHtml.replace(/<!--.*?-->/mg, '')
     // 过滤 data-xxx 属性
     pasteHtml = pasteHtml.replace(/\s?data-.+?=('|").+?('|")/igm, '')
+    // pasteHtml = pasteHtml.replace(/\s?<span.+?>/igm, '')
 
     if (ignoreImg) {
         // 忽略图片
@@ -61,10 +62,23 @@ export function getPasteHtml(e, filterStyle, ignoreImg) {
         // 保留样式
         // pasteHtml = pasteHtml.replace(/\s?class=('|").*?('|")/igm, '')
     // }
-	
-	// 保留class
-    pasteHtml = pasteHtml.replace(/\s?style=('|").*?('|")/igm, '')
-	
+    //整段复制，保留class 过滤style
+    pasteHtml = pasteHtml.replace(/\s?style=('|").*?('|")/igm, '');
+    // 去掉 无用标签
+    pasteHtml = pasteHtml.replace('<html>', '')
+    pasteHtml = pasteHtml.replace('<body>', '')
+    pasteHtml = pasteHtml.replace('</body>', '')
+    pasteHtml = pasteHtml.replace('<span>', '')
+    pasteHtml = pasteHtml.replace('</span>', '')
+    pasteHtml = pasteHtml.replace('<b>', '')
+    pasteHtml = pasteHtml.replace('</b>', '')
+    pasteHtml = pasteHtml.replace('<font>', '')
+    pasteHtml = pasteHtml.replace('</font>', '')
+    pasteHtml = pasteHtml.replace('<i>', '')
+    pasteHtml = pasteHtml.replace('</i>', '')
+
+    pasteHtml = pasteHtml.trim() // 去掉空白
+
     return pasteHtml
 }
 
